@@ -1,6 +1,0 @@
-# Ignore Python files - we use Node.js for the API
-agent.py
-requirements.txt
-__pycache__/
-*.pyc
-.env
