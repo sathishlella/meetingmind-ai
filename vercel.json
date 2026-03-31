@@ -2,20 +2,18 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/**/*.py",
+      "src": "api/briefing.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1.py"
+      "src": "/api/briefing",
+      "dest": "/api/briefing.py"
     },
     {
       "src": "/(.*)",
       "dest": "/demo.html"
     }
-  ],
-  "env": {
-    "XAI_API_KEY": "@xai_api_key"
-  }
+  ]
+}
