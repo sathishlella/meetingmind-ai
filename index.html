@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MeetingMind AI — Day 1 of 100</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #0f0f13;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(99,179,237,0.2);
+    }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-icon {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+    .logo-text h1 { font-size: 22px; font-weight: 700; color: #fff; }
+    .logo-text p { font-size: 12px; color: #90cdf4; margin-top: 2px; }
+    .badge {
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 30px;
+    }
+
+    /* ── CARD BASE ── */
+    .card {
+      background: #1a1d2e;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 28px;
+    }
+    .card h2 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #90cdf4;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ── INPUT PANEL ── */
+    .input-panel {}
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #718096;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
+    }
+    input, textarea, select {
+      width: 100%;
+      background: #0f1117;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      color: #e2e8f0;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-family: inherit;
+      margin-bottom: 18px;
+      transition: border-color 0.2s;
+      outline: none;
+      resize: vertical;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102,126,234,0.15);
+    }
+    textarea { min-height: 90px; }
+    select { cursor: pointer; }
+
+    .attendee-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .attendee-row input { margin-bottom: 0; flex: 1; }
+    .btn-add {
+      background: rgba(102,126,234,0.15);
+      border: 1px dashed #667eea;
+      color: #667eea;
+      border-radius: 10px;
+      padding: 0 16px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .btn-add:hover { background: rgba(102,126,234,0.3); }
+
+    .attendees-list { margin-bottom: 18px; }
+    .attendee-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(102,126,234,0.15);
+      border: 1px solid rgba(102,126,234,0.3);
+      color: #a5b4fc;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 13px;
+      margin: 4px 4px 4px 0;
+    }
+    .attendee-tag .remove {
+      cursor: pointer;
+      color: #fc8181;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .btn-generate {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      letter-spacing: 0.5px;
+    }
+    .btn-generate:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(102,126,234,0.5);
+    }
+    .btn-generate:active { transform: translateY(0); }
+    .btn-generate:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ── OUTPUT PANEL ── */
+    .output-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+      gap: 16px;
+      color: #4a5568;
+    }
+    .empty-state .icon { font-size: 60px; }
+    .empty-state p { font-size: 15px; text-align: center; max-width: 280px; line-height: 1.6; }
+
+    /* ── RESULT SECTIONS ── */
+    .result-section { display: none; }
+    .result-section.visible { display: block; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .section-icon {
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+    .section-title { font-size: 15px; font-weight: 700; color: #e2e8f0; }
+    .section-subtitle { font-size: 12px; color: #718096; }
+
+    /* ── ATTENDEE CARDS ── */
+    .attendee-card {
+      background: #0f1117;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .attendee-info .name { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+    .attendee-info .role { font-size: 12px; color: #718096; margin-bottom: 8px; }
+    .insight-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    .chip.interest { background: rgba(72,187,120,0.15); color: #68d391; border: 1px solid rgba(72,187,120,0.2); }
+    .chip.pain { background: rgba(245,101,101,0.15); color: #fc8181; border: 1px solid rgba(245,101,101,0.2); }
+    .chip.hook { background: rgba(237,137,54,0.15); color: #f6ad55; border: 1px solid rgba(237,137,54,0.2); }
+
+    /* ── AGENDA ── */
+    .agenda-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .agenda-item:last-child { border-bottom: none; }
+    .time-badge {
+      background: rgba(102,126,234,0.15);
+      color: #a5b4fc;
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      border: 1px solid rgba(102,126,234,0.25);
+    }
+    .agenda-text .title { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+    .agenda-text .desc { font-size: 12px; color: #718096; line-height: 1.5; }
+
+    /* ── TALKING POINTS ── */
+    .talking-point {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .talking-point:last-child { border-bottom: none; }
+    .tp-num {
+      width: 24px; height: 24px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .tp-text { font-size: 13px; line-height: 1.6; color: #cbd5e0; }
+
+    /* ── PREDICTED Q&A ── */
+    .qa-item {
+      background: #0f1117;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+    .qa-item .question {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fbd38d;
+      margin-bottom: 8px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .qa-item .answer { font-size: 13px; color: #a0aec0; line-height: 1.6; }
+    .q-icon {
+      background: rgba(251,211,141,0.15);
+      color: #fbd38d;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .a-label {
+      display: inline-block;
+      background: rgba(72,187,120,0.15);
+      color: #68d391;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+
+    /* ── CHECKLIST ── */
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      cursor: pointer;
+    }
+    .checklist-item:last-child { border-bottom: none; }
+    .check-box {
+      width: 20px; height: 20px;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 5px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .checklist-item.checked .check-box {
+      background: #48bb78;
+      border-color: #48bb78;
+    }
+    .checklist-item.checked .check-box::after { content: '✓'; color: white; font-size: 12px; font-weight: 700; }
+    .checklist-item.checked .check-label { text-decoration: line-through; color: #4a5568; }
+    .check-label { font-size: 13px; color: #cbd5e0; }
+    .check-priority {
+      margin-left: auto;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .priority-high { background: rgba(245,101,101,0.15); color: #fc8181; }
+    .priority-med  { background: rgba(237,137,54,0.15);  color: #f6ad55; }
+    .priority-low  { background: rgba(72,187,120,0.15);  color: #68d391; }
+
+    /* ── LOADING ── */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .loading-overlay.visible { display: flex; }
+    .spinner {
+      width: 50px; height: 50px;
+      border: 3px solid rgba(102,126,234,0.2);
+      border-top-color: #667eea;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-steps { text-align: center; }
+    .loading-step {
+      font-size: 14px;
+      color: #90cdf4;
+      padding: 4px 0;
+      opacity: 0;
+      animation: fadeIn 0.5s forwards;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    /* ── SCORE BAR ── */
+    .score-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .score-label { font-size: 12px; color: #718096; width: 140px; flex-shrink: 0; }
+    .score-bar-bg {
+      flex: 1;
+      height: 6px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .score-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #667eea, #f093fb);
+      transition: width 1s ease;
+    }
+    .score-val { font-size: 12px; font-weight: 700; color: #a5b4fc; width: 30px; text-align: right; }
+
+    /* ── TABS ── */
+    .tabs { display: flex; gap: 4px; margin-bottom: 20px; }
+    .tab {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #718096;
+      border: 1px solid transparent;
+    }
+    .tab.active {
+      background: rgba(102,126,234,0.15);
+      color: #a5b4fc;
+      border-color: rgba(102,126,234,0.3);
+    }
+    .tab:hover:not(.active) { color: #e2e8f0; background: rgba(255,255,255,0.05); }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── COPY BUTTON ── */
+    .copy-btn {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #718096;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-left: auto;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,0.1); color: #e2e8f0; }
+
+    @media (max-width: 900px) {
+      .container { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">🧠</div>
+    <div class="logo-text">
+      <h1>MeetingMind AI</h1>
+      <p>Intelligent Meeting Preparation Agent</p>
+    </div>
+  </div>
+  <div class="badge">🚀 Day 1 of 100</div>
+</header>
+
+<div class="container">
+
+  <!-- ── INPUT PANEL ── -->
+  <div class="card input-panel">
+    <h2>⚙️ Meeting Setup</h2>
+
+    <label>Meeting Title</label>
+    <input type="text" id="meetingTitle" placeholder="e.g. Q2 Sales Strategy Review" />
+
+    <label>Meeting Type</label>
+    <select id="meetingType">
+      <option value="sales">Sales / Discovery Call</option>
+      <option value="investor">Investor Pitch</option>
+      <option value="hiring">Hiring Interview</option>
+      <option value="partnership">Partnership Discussion</option>
+      <option value="product">Product Review</option>
+      <option value="client">Client Check-in</option>
+    </select>
+
+    <label>Your Goal for This Meeting</label>
+    <textarea id="meetingGoal" placeholder="e.g. Convince them to upgrade to Enterprise plan and close by end of quarter..."></textarea>
+
+    <label>Attendees</label>
+    <div class="attendees-list" id="attendeeList"></div>
+    <div class="attendee-row">
+      <input type="text" id="attendeeInput" placeholder="Name, Company (e.g. Sarah Chen, Stripe)" />
+      <button class="btn-add" onclick="addAttendee()">+ Add</button>
+    </div>
+
+    <label>Additional Context</label>
+    <textarea id="context" placeholder="Any background info, previous interactions, known pain points..."></textarea>
+
+    <button class="btn-generate" id="generateBtn" onclick="generateBriefing()">
+      🧠 Generate Meeting Briefing
+    </button>
+  </div>
+
+  <!-- ── OUTPUT PANEL ── -->
+  <div class="output-panel" id="outputPanel">
+
+    <div class="empty-state" id="emptyState">
+      <div class="icon">🤝</div>
+      <p>Fill in your meeting details and click <strong>Generate</strong> to get your AI-powered briefing</p>
+    </div>
+
+    <!-- MEETING SCORE -->
+    <div class="card result-section" id="scoreSection">
+      <h2>📊 Meeting Readiness Score</h2>
+      <div id="scoreContent"></div>
+    </div>
+
+    <!-- TABS for main content -->
+    <div class="card result-section" id="mainSection">
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab('attendees')">👥 Attendees</div>
+        <div class="tab" onclick="switchTab('agenda')">📋 Agenda</div>
+        <div class="tab" onclick="switchTab('talking')">💡 Talking Points</div>
+        <div class="tab" onclick="switchTab('qa')">❓ Predicted Q&A</div>
+        <div class="tab" onclick="switchTab('checklist')">✅ Checklist</div>
+      </div>
+
+      <div class="tab-content active" id="tab-attendees"></div>
+      <div class="tab-content" id="tab-agenda"></div>
+      <div class="tab-content" id="tab-talking"></div>
+      <div class="tab-content" id="tab-qa"></div>
+      <div class="tab-content" id="tab-checklist"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── LOADING OVERLAY ── -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-steps" id="loadingSteps"></div>
+</div>
+
+<script>
+  // ── STATE ──
+  const attendees = [];
+  let activeTab = 'attendees';
+
+  // ── ATTENDEES ──
+  document.getElementById('attendeeInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addAttendee();
+  });
+
+  function addAttendee() {
+    const input = document.getElementById('attendeeInput');
+    const val = input.value.trim();
+    if (!val) return;
+    attendees.push(val);
+    input.value = '';
+    renderAttendees();
+  }
+
+  function removeAttendee(i) {
+    attendees.splice(i, 1);
+    renderAttendees();
+  }
+
+  function renderAttendees() {
+    const list = document.getElementById('attendeeList');
+    list.innerHTML = attendees.map((a, i) =>
+      `<span class="attendee-tag">${a}<span class="remove" onclick="removeAttendee(${i})">×</span></span>`
+    ).join('');
+  }
+
+  // ── TABS ──
+  function switchTab(tab) {
+    activeTab = tab;
+    document.querySelectorAll('.tab').forEach((t, i) => {
+      const tabs = ['attendees','agenda','talking','qa','checklist'];
+      t.classList.toggle('active', tabs[i] === tab);
+    });
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.getElementById(`tab-${tab}`).classList.add('active');
+  }
+
+  // ── GENERATE ──
+  async function generateBriefing() {
+    const title = document.getElementById('meetingTitle').value.trim();
+    const type  = document.getElementById('meetingType').value;
+    const goal  = document.getElementById('meetingGoal').value.trim();
+    const ctx   = document.getElementById('context').value.trim();
+
+    if (!title) { alert('Please enter a meeting title!'); return; }
+    if (attendees.length === 0) { alert('Please add at least one attendee!'); return; }
+
+    // Show loading
+    showLoading();
+
+    // Parse attendees
+    const parsedAttendees = attendees.map(a => {
+      const parts = a.split(',');
+      return {
+        name: parts[0].trim(),
+        company: parts[1] ? parts[1].trim() : 'Unknown Co.',
+        title: parts[2] ? parts[2].trim() : null
+      };
+    });
+
+    // Try API first, fallback to mock
+    let data = null;
+    try {
+      const response = await fetch('/api/briefing', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: title,
+          meeting_type: type,
+          your_goal: goal,
+          extra_context: ctx,
+          attendees: parsedAttendees
+        })
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        data = transformApiResponse(result);
+      }
+    } catch (e) {
+      console.log('API not available, using mock data');
+    }
+
+    // Fallback to mock if API failed
+    if (!data) {
+      await sleep(2000);
+      data = buildBriefingData(title, type, goal, attendees, ctx);
+    }
+
+    hideLoading();
+    renderBriefing(data);
+  }
+
+  // Transform API response to demo format
+  function transformApiResponse(result) {
+    const req = result.meeting_request || {};
+    const profiles = result.attendee_profiles || [];
+    const agenda = result.agenda || [];
+    const talking = result.talking_points || [];
+    const qa = result.predicted_qa || [];
+    const checks = result.pre_meeting_checklist || [];
+
+    const colors = ['#667eea','#f093fb','#4fd1c5','#f6ad55','#fc8181'];
+
+    return {
+      title: req.title || 'Meeting',
+      score: result.readiness_score || 75,
+      summary: result.executive_summary || '',
+      scores: [
+        { label: 'Attendee Research', val: 90 },
+        { label: 'Agenda Strategy', val: 85 },
+        { label: 'Talking Points', val: 80 },
+        { label: 'Q&A Preparation', val: 75 },
+        { label: 'Overall Readiness', val: result.readiness_score || 75 }
+      ],
+      attendeeCards: profiles.map((p, i) => ({
+        name: p.name,
+        role: p.inferred_role || 'Executive',
+        company: p.company,
+        avatar: p.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2),
+        color: colors[i % colors.length],
+        interests: p.likely_interests || [],
+        pains: p.likely_pain_points || [],
+        hooks: p.conversation_hooks || []
+      })),
+      agenda: agenda.map(a => ({
+        time: a.time_slot,
+        title: a.title,
+        desc: a.description + (a.key_objective ? ` (Objective: ${a.key_objective})` : '')
+      })),
+      talkingPoints: talking,
+      qa: qa.map(q => ({ q: q.question, a: q.suggested_answer })),
+      checks: checks.map(c => ({
+        label: `[${c.priority.toUpperCase()}] ${c.task} (~${c.estimated_minutes}min)`,
+        priority: c.priority
+      }))
+    };
+  }
+
+  function showLoading() {
+    document.getElementById('generateBtn').disabled = true;
+    const overlay = document.getElementById('loadingOverlay');
+    overlay.classList.add('visible');
+    const steps = [
+      '🔍 Researching attendees...',
+      '📊 Analyzing meeting context...',
+      '🎯 Generating agenda...',
+      '💡 Crafting talking points...',
+      '❓ Predicting questions...',
+      '✅ Building checklist...'
+    ];
+    const container = document.getElementById('loadingSteps');
+    container.innerHTML = '';
+    steps.forEach((s, i) => {
+      const el = document.createElement('div');
+      el.className = 'loading-step';
+      el.textContent = s;
+      el.style.animationDelay = `${i * 0.45}s`;
+      container.appendChild(el);
+    });
+  }
+
+  function hideLoading() {
+    document.getElementById('loadingOverlay').classList.remove('visible');
+    document.getElementById('generateBtn').disabled = false;
+  }
+
+  function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  // ── DATA BUILDER ──
+  function buildBriefingData(title, type, goal, attendees, ctx) {
+    const colors = ['#667eea','#f093fb','#4fd1c5','#f6ad55','#fc8181'];
+    const roles = {
+      sales:       ['VP of Sales','Director of Revenue','Account Executive','Chief Revenue Officer'],
+      investor:    ['Partner','Managing Director','General Partner','Venture Analyst'],
+      hiring:      ['Engineering Manager','CTO','HR Director','Team Lead'],
+      partnership: ['VP of Partnerships','Business Development Lead','Strategic Alliances Director'],
+      product:     ['Product Manager','VP of Product','Head of Design','Engineering Lead'],
+      client:      ['Customer Success Manager','VP of Operations','COO','Account Owner']
+    };
+    const interests = ['Revenue Growth','Process Automation','Cost Reduction','Team Efficiency','Data Analytics','Customer Experience','Scalability','Security & Compliance','Market Expansion','Digital Transformation'];
+    const pains     = ['Manual workflows','Data silos','High churn','Slow reporting','Integration issues','Scaling costs','Talent retention','Competitive pressure'];
+    const hooks     = ['Recently raised Series B','Expanding to APAC','New CTO hired','Missed Q1 targets','Won industry award','Going public in 2026'];
+
+    const attendeeCards = attendees.map((a, i) => {
+      const parts = a.split(',');
+      const name = parts[0].trim();
+      const company = parts[1] ? parts[1].trim() : 'Unknown Co.';
+      const roleList = roles[type] || roles.sales;
+      return {
+        name,
+        company,
+        role: roleList[i % roleList.length],
+        avatar: name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2),
+        color: colors[i % colors.length],
+        interests: [interests[i*2 % interests.length], interests[(i*2+1) % interests.length]],
+        pains:     [pains[i % pains.length]],
+        hooks:     [hooks[i % hooks.length]]
+      };
+    });
+
+    const agendas = {
+      sales: [
+        {time:'0:00–5m', title:'Warm-up & Introductions', desc:'Personal connection, acknowledge their latest news'},
+        {time:'5–15m',   title:'Discovery Deep-Dive', desc:'Uncover current pain points, budget timeline, and decision process'},
+        {time:'15–30m',  title:'Tailored Demo', desc:'Show exactly the 3 features that solve their top pain'},
+        {time:'30–40m',  title:'ROI Discussion', desc:'Present financial case: cost savings, time reclaimed, revenue uplift'},
+        {time:'40–50m',  title:'Objection Handling', desc:'Address pricing, integration, and timeline concerns'},
+        {time:'50–60m',  title:'Clear Next Steps', desc:'Define trial, pilot, or contract path with dates'}
+      ],
+      investor: [
+        {time:'0:00–5m', title:'Hook Opening', desc:'One powerful stat or story that frames the problem'},
+        {time:'5–15m',   title:'Problem & Market', desc:'TAM/SAM/SOM, customer pain evidence'},
+        {time:'15–25m',  title:'Product Demo', desc:'Show, don\'t tell — live or recorded walkthrough'},
+        {time:'25–35m',  title:'Traction & Metrics', desc:'MRR, growth rate, key customers, retention'},
+        {time:'35–45m',  title:'Team & Vision', desc:'Why you, why now, 3-year roadmap'},
+        {time:'45–60m',  title:'Term Discussion', desc:'Raise amount, valuation, use of funds'}
+      ]
+    };
+
+    const agenda = (agendas[type] || agendas.sales);
+
+    const tpMap = {
+      sales: [
+        `Lead with their pain: reference the specific challenge "${ctx || 'scaling efficiently'}" before mentioning your solution`,
+        `Use the "before / after" framework: describe their world today vs. after implementing your solution`,
+        `Drop a relevant case study: a similar-sized company that achieved measurable results within 90 days`,
+        `Anchor pricing high first, then present the value-tier as a logical step-down`,
+        `Create urgency: mention end-of-quarter pricing or limited onboarding slots`
+      ],
+      investor: [
+        `Open with one jaw-dropping metric or customer quote that validates the market`,
+        `Show defensibility: patents, proprietary data, network effects, or switching costs`,
+        `Address the "why now" question proactively — regulatory tailwind, tech shift, behavior change`,
+        `Have 3 scenarios ready: conservative, base, and bull case for 3-year projections`,
+        `End with a crisp ask: specific dollar amount, what it unlocks, expected close date`
+      ]
+    };
+    const talkingPoints = (tpMap[type] || tpMap.sales);
+
+    const qaMap = {
+      sales: [
+        {q:`"We're already using [competitor]. Why switch?"`, a:`Acknowledge their investment, then pivot to gaps: "That's great you have something in place. Most teams we talk to find [specific gap]. Can I show you how we handle that differently in 2 minutes?"`},
+        {q:`"What's the implementation timeline?"`, a:`"Most teams are live in 2–3 weeks. We assign a dedicated onboarding specialist and have done 300+ migrations. Your data is never at risk."`},
+        {q:`"The price is higher than we budgeted."`, a:`"I hear you. Let me share what [similar customer] calculated as their ROI — they recouped the cost in under 60 days. Should we build that model for your numbers?"`},
+        {q:`"We need to involve more stakeholders."`, a:`"Totally makes sense. Who else should be in the room? I can prepare a 10-minute exec summary and join any internal call you need."`}
+      ],
+      investor: [
+        {q:`"What's your moat?"`, a:`"Three things: proprietary training data from 50K+ enterprise users, 18-month integrations advantage, and NPS of 72 creating organic referrals. Each one compounds."`},
+        {q:`"How do you plan to use the funds?"`, a:`"40% product engineering to hit feature parity on enterprise, 35% sales/marketing to 3x pipeline, 25% ops and infrastructure for scale."`},
+        {q:`"What if a big player copies this?"`, a:`"They'll be 2 years behind on data and distribution. We've seen this play out in adjacent markets — the incumbent can't move fast enough without cannibalizing revenue."`},
+        {q:`"Show me the unit economics."`, a:`"CAC is $1,200, LTV is $18,000, payback period 4 months. At scale, CAC drops 60% through partner channels."`}
+      ]
+    };
+    const qa = (qaMap[type] || qaMap.sales);
+
+    const checks = [
+      {label: `Research ${attendees[0].split(',')[0].trim()}'s LinkedIn & recent posts`, priority:'high'},
+      {label: `Prepare customized demo environment with their logo & use case`, priority:'high'},
+      {label: `Review competitor landscape for this account`, priority:'high'},
+      {label: `Prepare ROI calculator with their industry benchmarks`, priority:'med'},
+      {label: `Set up screen share & test audio 15 min before`, priority:'med'},
+      {label: `Prepare leave-behind one-pager (PDF)`, priority:'med'},
+      {label: `Define your BATNA (Best Alternative to a Negotiated Agreement)`, priority:'med'},
+      {label: `Confirm calendar invite was accepted by all attendees`, priority:'low'},
+      {label: `Prepare notepad with their key pain points to reference`, priority:'low'}
+    ];
+
+    const scores = [
+      {label:'Attendee Intel', val: Math.min(100, 60 + attendees.length * 12)},
+      {label:'Agenda Clarity', val: 85},
+      {label:'Talking Point Strength', val: ctx ? 90 : 72},
+      {label:'Objection Readiness', val: 78},
+      {label:'Overall Readiness', val: Math.min(100, 70 + attendees.length * 8)}
+    ];
+
+    return { title, type, goal, attendeeCards, agenda, talkingPoints, qa, checks, scores };
+  }
+
+  // ── RENDER ──
+  function renderBriefing(data) {
+    document.getElementById('emptyState').style.display = 'none';
+
+    // Score section
+    const scoreEl = document.getElementById('scoreSection');
+    scoreEl.classList.add('visible');
+    document.getElementById('scoreContent').innerHTML = data.scores.map(s => `
+      <div class="score-row">
+        <div class="score-label">${s.label}</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:0%" data-width="${s.val}%"></div></div>
+        <div class="score-val">${s.val}%</div>
+      </div>
+    `).join('');
+    setTimeout(() => {
+      document.querySelectorAll('.score-bar-fill').forEach(el => {
+        el.style.width = el.dataset.width;
+      });
+    }, 100);
+
+    // Main section
+    document.getElementById('mainSection').classList.add('visible');
+
+    // Attendees tab
+    document.getElementById('tab-attendees').innerHTML = data.attendeeCards.map(a => `
+      <div class="attendee-card">
+        <div class="avatar" style="background:${a.color}22;color:${a.color}">${a.avatar}</div>
+        <div class="attendee-info">
+          <div class="name">${a.name}</div>
+          <div class="role">${a.role} · ${a.company}</div>
+          <div class="insight-chips">
+            ${a.interests.map(i=>`<span class="chip interest">📈 ${i}</span>`).join('')}
+            ${a.pains.map(p=>`<span class="chip pain">⚠️ ${p}</span>`).join('')}
+            ${a.hooks.map(h=>`<span class="chip hook">🔗 ${h}</span>`).join('')}
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    // Agenda tab
+    document.getElementById('tab-agenda').innerHTML = data.agenda.map(a => `
+      <div class="agenda-item">
+        <div class="time-badge">${a.time}</div>
+        <div class="agenda-text">
+          <div class="title">${a.title}</div>
+          <div class="desc">${a.desc}</div>
+        </div>
+      </div>
+    `).join('');
+
+    // Talking points tab
+    document.getElementById('tab-talking').innerHTML = data.talkingPoints.map((tp, i) => `
+      <div class="talking-point">
+        <div class="tp-num">${i+1}</div>
+        <div class="tp-text">${tp}</div>
+      </div>
+    `).join('');
+
+    // Q&A tab
+    document.getElementById('tab-qa').innerHTML = data.qa.map(q => `
+      <div class="qa-item">
+        <div class="question"><span class="q-icon">Q</span>${q.q}</div>
+        <div class="answer"><span class="a-label">A</span>${q.a}</div>
+      </div>
+    `).join('');
+
+    // Checklist tab
+    document.getElementById('tab-checklist').innerHTML = data.checks.map((c, i) => `
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <span class="check-label">${c.label}</span>
+        <span class="check-priority priority-${c.priority}">${c.priority.toUpperCase()}</span>
+      </div>
+    `).join('');
+
+    // Switch to attendees tab
+    switchTab('attendees');
+  }
+
+  function toggleCheck(el) {
+    el.classList.toggle('checked');
+  }
+
+  // ── PREFILL DEMO DATA ──
+  window.onload = () => {
+    document.getElementById('meetingTitle').value = 'Q2 Enterprise Expansion Review';
+    document.getElementById('meetingGoal').value = 'Close the $120K annual contract and get procurement sign-off this week';
+    document.getElementById('context').value = 'They missed their Q1 growth targets and their CTO is pushing for automation solutions';
+    ['Sarah Chen, Stripe', 'Marcus Reeves, Stripe'].forEach(a => {
+      attendees.push(a);
+    });
+    renderAttendees();
+  };
+</script>
+</body>
+</html>
