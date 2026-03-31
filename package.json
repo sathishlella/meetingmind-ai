@@ -1,0 +1,14 @@
+{
+  "name": "meetingmind-ai",
+  "version": "1.0.0",
+  "description": "AI-powered meeting preparation agent",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "openai": "^4.0.0"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}

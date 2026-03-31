@@ -3,7 +3,7 @@
   "routes": [
     {
       "src": "/api/briefing",
-      "dest": "/api/briefing.py"
+      "dest": "/api/briefing.js"
     },
     {
       "src": "/(.*)",
