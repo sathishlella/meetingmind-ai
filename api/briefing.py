@@ -4,88 +4,74 @@ Endpoint: /api/briefing
 """
 
 import os
-import json
 import sys
+import json
 
 # Add parent directory to path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from agent import MeetingMindAgent, MeetingRequest, Attendee
+from flask import Flask, request, jsonify
 
+app = Flask(__name__)
 
-def handler(request):
-    """Handle HTTP requests for briefing generation."""
+@app.route('/api/briefing', methods=['POST', 'OPTIONS'])
+def briefing():
+    """Handle briefing generation requests."""
     
-    # Handle CORS
-    headers = {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Content-Type": "application/json"
-    }
-    
-    if request.get("method") == "OPTIONS":
-        return {"statusCode": 200, "headers": headers, "body": ""}
-    
-    if request.get("method") != "POST":
-        return {
-            "statusCode": 405,
-            "headers": headers,
-            "body": json.dumps({"error": "Method not allowed"})
-        }
+    # Handle CORS preflight
+    if request.method == 'OPTIONS':
+        response = jsonify({})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+        return response
     
     try:
-        # Parse request body
-        body = json.loads(request.get("body", "{}"))
+        # Import agent modules here to avoid loading on cold start issues
+        from agent import MeetingMindAgent, MeetingRequest, Attendee
         
-        # Build meeting request
-        attendees = [
-            Attendee(
-                name=a["name"],
-                company=a["company"],
+        # Parse request body
+        data = request.get_json() or {}
+        
+        # Build attendees
+        attendees = []
+        for a in data.get("attendees", []):
+            attendees.append(Attendee(
+                name=a.get("name", ""),
+                company=a.get("company", ""),
                 title=a.get("title"),
                 extra_context=a.get("extra_context")
-            )
-            for a in body.get("attendees", [])
-        ]
+            ))
         
+        # Build meeting request
         meeting_request = MeetingRequest(
-            title=body.get("title", "Untitled Meeting"),
-            meeting_type=body.get("meeting_type", "sales"),
-            your_goal=body.get("your_goal", ""),
-            your_name=body.get("your_name", "You"),
-            your_company=body.get("your_company", "Your Company"),
-            duration_minutes=body.get("duration_minutes", 60),
+            title=data.get("title", "Untitled Meeting"),
+            meeting_type=data.get("meeting_type", "sales"),
+            your_goal=data.get("your_goal", ""),
+            your_name=data.get("your_name", "You"),
+            your_company=data.get("your_company", "Your Company"),
+            duration_minutes=data.get("duration_minutes", 60),
             attendees=attendees,
-            extra_context=body.get("extra_context")
+            extra_context=data.get("extra_context")
         )
         
-        # Generate briefing using Grok
+        # Generate briefing
         agent = MeetingMindAgent()
-        briefing = agent.prepare_briefing(meeting_request)
+        briefing_result = agent.prepare_briefing(meeting_request)
         
-        # Convert to dict for JSON serialization
+        # Convert to dict
         import dataclasses
-        result = dataclasses.asdict(briefing)
+        result = dataclasses.asdict(briefing_result)
         
-        return {
-            "statusCode": 200,
-            "headers": headers,
-            "body": json.dumps(result, default=str)
-        }
+        response = jsonify(result)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
         
     except Exception as e:
-        return {
-            "statusCode": 500,
-            "headers": headers,
-            "body": json.dumps({"error": str(e)})
-        }
-
-
-# Vercel serverless function entry point
-def POST(request):
-    return handler(request)
-
-
-def OPTIONS(request):
-    return handler(request)
+        import traceback
+        error_response = jsonify({
+            "error": str(e),
+            "traceback": traceback.format_exc()
+        })
+        error_response.headers.add('Access-Control-Allow-Origin', '*')
+        return error_response, 500
