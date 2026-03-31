@@ -1,0 +1,26 @@
+# Environment variables
+.env
+
+# Generated files
+meeting_briefing.md
+meeting_briefing.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

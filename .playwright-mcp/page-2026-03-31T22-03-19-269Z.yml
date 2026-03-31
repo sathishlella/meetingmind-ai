@@ -1,0 +1,94 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]: 🧠
+      - generic [ref=e5]:
+        - heading "MeetingMind AI" [level=1] [ref=e6]
+        - paragraph [ref=e7]: Intelligent Meeting Preparation Agent
+    - generic [ref=e8]: 🚀 Day 1 of 100
+  - generic [ref=e9]:
+    - generic [ref=e10]:
+      - heading "⚙️ Meeting Setup" [level=2] [ref=e11]
+      - generic [ref=e12]: Meeting Title
+      - textbox "e.g. Q2 Sales Strategy Review" [ref=e13]: Q2 Enterprise Expansion Review
+      - generic [ref=e14]: Meeting Type
+      - combobox [ref=e15] [cursor=pointer]:
+        - option "Sales / Discovery Call" [selected]
+        - option "Investor Pitch"
+        - option "Hiring Interview"
+        - option "Partnership Discussion"
+        - option "Product Review"
+        - option "Client Check-in"
+      - generic [ref=e16]: Your Goal for This Meeting
+      - textbox "e.g. Convince them to upgrade to Enterprise plan and close by end of quarter..." [ref=e17]: Close the $120K annual contract and get procurement sign-off this week
+      - generic [ref=e18]: Attendees
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - text: Sarah Chen, Stripe
+          - generic [ref=e21] [cursor=pointer]: ×
+        - generic [ref=e22]:
+          - text: Marcus Reeves, Stripe
+          - generic [ref=e23] [cursor=pointer]: ×
+      - generic [ref=e24]:
+        - textbox "Name, Company (e.g. Sarah Chen, Stripe)" [ref=e25]
+        - button "+ Add" [ref=e26] [cursor=pointer]
+      - generic [ref=e27]: Additional Context
+      - textbox "Any background info, previous interactions, known pain points..." [ref=e28]: They missed their Q1 growth targets and their CTO is pushing for automation solutions
+      - button "🧠 Generate Meeting Briefing" [ref=e29] [cursor=pointer]
+    - generic [ref=e30]:
+      - generic [ref=e44]:
+        - heading "📊 Meeting Readiness Score" [level=2] [ref=e45]
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - generic [ref=e48]: Attendee Intel
+            - generic [ref=e51]: 84%
+          - generic [ref=e52]:
+            - generic [ref=e53]: Agenda Clarity
+            - generic [ref=e56]: 85%
+          - generic [ref=e57]:
+            - generic [ref=e58]: Talking Point Strength
+            - generic [ref=e61]: 90%
+          - generic [ref=e62]:
+            - generic [ref=e63]: Objection Readiness
+            - generic [ref=e66]: 78%
+          - generic [ref=e67]:
+            - generic [ref=e68]: Overall Readiness
+            - generic [ref=e71]: 86%
+      - generic [ref=e72]:
+        - generic [ref=e73]:
+          - generic [ref=e74] [cursor=pointer]: 👥 Attendees
+          - generic [ref=e75] [cursor=pointer]: 📋 Agenda
+          - generic [ref=e76] [cursor=pointer]: 💡 Talking Points
+          - generic [ref=e77] [cursor=pointer]: ❓ Predicted Q&A
+          - generic [ref=e78] [cursor=pointer]: ✅ Checklist
+        - generic [ref=e137]:
+          - generic [ref=e138]:
+            - generic [ref=e139]: 0:00–5m
+            - generic [ref=e140]:
+              - generic [ref=e141]: Warm-up & Introductions
+              - generic [ref=e142]: Personal connection, acknowledge their latest news
+          - generic [ref=e143]:
+            - generic [ref=e144]: 5–15m
+            - generic [ref=e145]:
+              - generic [ref=e146]: Discovery Deep-Dive
+              - generic [ref=e147]: Uncover current pain points, budget timeline, and decision process
+          - generic [ref=e148]:
+            - generic [ref=e149]: 15–30m
+            - generic [ref=e150]:
+              - generic [ref=e151]: Tailored Demo
+              - generic [ref=e152]: Show exactly the 3 features that solve their top pain
+          - generic [ref=e153]:
+            - generic [ref=e154]: 30–40m
+            - generic [ref=e155]:
+              - generic [ref=e156]: ROI Discussion
+              - generic [ref=e157]: "Present financial case: cost savings, time reclaimed, revenue uplift"
+          - generic [ref=e158]:
+            - generic [ref=e159]: 40–50m
+            - generic [ref=e160]:
+              - generic [ref=e161]: Objection Handling
+              - generic [ref=e162]: Address pricing, integration, and timeline concerns
+          - generic [ref=e163]:
+            - generic [ref=e164]: 50–60m
+            - generic [ref=e165]:
+              - generic [ref=e166]: Clear Next Steps
+              - generic [ref=e167]: Define trial, pilot, or contract path with dates

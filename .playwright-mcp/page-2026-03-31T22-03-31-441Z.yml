@@ -1,0 +1,92 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]: 🧠
+      - generic [ref=e5]:
+        - heading "MeetingMind AI" [level=1] [ref=e6]
+        - paragraph [ref=e7]: Intelligent Meeting Preparation Agent
+    - generic [ref=e8]: 🚀 Day 1 of 100
+  - generic [ref=e9]:
+    - generic [ref=e10]:
+      - heading "⚙️ Meeting Setup" [level=2] [ref=e11]
+      - generic [ref=e12]: Meeting Title
+      - textbox "e.g. Q2 Sales Strategy Review" [ref=e13]: Q2 Enterprise Expansion Review
+      - generic [ref=e14]: Meeting Type
+      - combobox [ref=e15] [cursor=pointer]:
+        - option "Sales / Discovery Call" [selected]
+        - option "Investor Pitch"
+        - option "Hiring Interview"
+        - option "Partnership Discussion"
+        - option "Product Review"
+        - option "Client Check-in"
+      - generic [ref=e16]: Your Goal for This Meeting
+      - textbox "e.g. Convince them to upgrade to Enterprise plan and close by end of quarter..." [ref=e17]: Close the $120K annual contract and get procurement sign-off this week
+      - generic [ref=e18]: Attendees
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - text: Sarah Chen, Stripe
+          - generic [ref=e21] [cursor=pointer]: ×
+        - generic [ref=e22]:
+          - text: Marcus Reeves, Stripe
+          - generic [ref=e23] [cursor=pointer]: ×
+      - generic [ref=e24]:
+        - textbox "Name, Company (e.g. Sarah Chen, Stripe)" [ref=e25]
+        - button "+ Add" [ref=e26] [cursor=pointer]
+      - generic [ref=e27]: Additional Context
+      - textbox "Any background info, previous interactions, known pain points..." [ref=e28]: They missed their Q1 growth targets and their CTO is pushing for automation solutions
+      - button "🧠 Generate Meeting Briefing" [ref=e29] [cursor=pointer]
+    - generic [ref=e30]:
+      - generic [ref=e44]:
+        - heading "📊 Meeting Readiness Score" [level=2] [ref=e45]
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - generic [ref=e48]: Attendee Intel
+            - generic [ref=e51]: 84%
+          - generic [ref=e52]:
+            - generic [ref=e53]: Agenda Clarity
+            - generic [ref=e56]: 85%
+          - generic [ref=e57]:
+            - generic [ref=e58]: Talking Point Strength
+            - generic [ref=e61]: 90%
+          - generic [ref=e62]:
+            - generic [ref=e63]: Objection Readiness
+            - generic [ref=e66]: 78%
+          - generic [ref=e67]:
+            - generic [ref=e68]: Overall Readiness
+            - generic [ref=e71]: 86%
+      - generic [ref=e72]:
+        - generic [ref=e73]:
+          - generic [ref=e74] [cursor=pointer]: 👥 Attendees
+          - generic [ref=e75] [cursor=pointer]: 📋 Agenda
+          - generic [ref=e76] [cursor=pointer]: 💡 Talking Points
+          - generic [ref=e77] [cursor=pointer]: ❓ Predicted Q&A
+          - generic [ref=e78] [cursor=pointer]: ✅ Checklist
+        - generic [ref=e168]:
+          - generic [ref=e169]:
+            - generic [ref=e170]:
+              - generic [ref=e171]: Q
+              - text: "\"We're already using [competitor]. Why switch?\""
+            - generic [ref=e172]:
+              - generic [ref=e173]: A
+              - text: "Acknowledge their investment, then pivot to gaps: \"That's great you have something in place. Most teams we talk to find [specific gap]. Can I show you how we handle that differently in 2 minutes?\""
+          - generic [ref=e174]:
+            - generic [ref=e175]:
+              - generic [ref=e176]: Q
+              - text: "\"What's the implementation timeline?\""
+            - generic [ref=e177]:
+              - generic [ref=e178]: A
+              - text: "\"Most teams are live in 2–3 weeks. We assign a dedicated onboarding specialist and have done 300+ migrations. Your data is never at risk.\""
+          - generic [ref=e179]:
+            - generic [ref=e180]:
+              - generic [ref=e181]: Q
+              - text: "\"The price is higher than we budgeted.\""
+            - generic [ref=e182]:
+              - generic [ref=e183]: A
+              - text: "\"I hear you. Let me share what [similar customer] calculated as their ROI — they recouped the cost in under 60 days. Should we build that model for your numbers?\""
+          - generic [ref=e184]:
+            - generic [ref=e185]:
+              - generic [ref=e186]: Q
+              - text: "\"We need to involve more stakeholders.\""
+            - generic [ref=e187]:
+              - generic [ref=e188]: A
+              - text: "\"Totally makes sense. Who else should be in the room? I can prepare a 10-minute exec summary and join any internal call you need.\""
