@@ -20,9 +20,7 @@ MeetingMind AI helps sales executives, founders, and deal-makers walk into any m
 - **✅ Pre-Meeting Checklist** — Prioritized actions with time estimates
 - **📊 Readiness Score** — Calculated score (0-100) based on preparation completeness
 
-## 🎬 Demo Video
 
-*(Add demo video link here)*
 
 ## 📁 Project Structure
 
