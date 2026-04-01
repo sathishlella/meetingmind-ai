@@ -83,6 +83,16 @@ module.exports = async (req, res) => {
       baseURL: 'https://api.x.ai/v1'
     });
 
+    // Build type-specific guidance
+    const typeGuidance = {
+      'sales': 'Focus on closing strategies, objection handling, competitor differentiation, and ROI proof points.',
+      'investor': 'Focus on traction, market size, team credentials, financial projections, and exit potential.',
+      'hiring': 'Focus on candidate assessment, company culture selling, role expectations, and career growth.',
+      'partnership': 'Focus on mutual benefits, collaboration models, resource sharing, and long-term value.',
+      'product': 'Focus on user needs, feature prioritization, technical feasibility, and roadmap alignment.',
+      'client': 'Focus on relationship building, understanding pain points, delivering value, and renewal/expansion.'
+    };
+
     const userPrompt = `Generate a meeting briefing for:
 
 Title: ${title || 'Untitled Meeting'}
@@ -90,6 +100,10 @@ Type: ${meeting_type || 'sales'}
 Goal: ${your_goal || 'Not specified'}
 Attendees: ${attendees?.map(a => `${a.name} (${a.company})`).join(', ') || 'None'}
 Context: ${extra_context || 'None provided'}
+
+IMPORTANT: This is a ${meeting_type || 'general'} meeting. ${typeGuidance[meeting_type] || typeGuidance['sales']}
+
+Make the Q&A specifically relevant to this meeting type. Do NOT use generic sales questions for interviews - use interview-appropriate questions instead.
 
 Return ONLY valid JSON.`;
 
