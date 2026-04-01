@@ -113,14 +113,6 @@ vercel --prod
    - Action checklist
 3. **Output:** Complete meeting briefing with readiness score
 
-## 💼 Business Model
-
-| Plan | Price | Features |
-|------|-------|----------|
-| Starter | $29/mo | 30 briefings/month |
-| Pro | $79/mo | Unlimited, CRM sync |
-| Team | $199/mo | Shared playbooks |
-| Enterprise | Custom | SSO, API, dedicated CSM |
 
 ## 🎯 Target Market
 
