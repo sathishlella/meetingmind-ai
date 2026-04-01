@@ -1,57 +1,64 @@
-# MeetingMind AI
+# 🧠 MeetingMind AI
 
-> **Day 1 of 100 | 100 Days 100 Startups Challenge**  
+> **Day 1 of 100 | 100 Days, 100 AI Agents — Building the Future in Public**  
 > An autonomous AI agent for intelligent meeting preparation.
+
+![MeetingMind AI Screenshot](./meetingmind-results.png)
 
 MeetingMind AI helps sales executives, founders, and deal-makers walk into any meeting fully prepared. Given a meeting title, type, goal, and attendee information, it autonomously generates personalized briefings using Grok AI.
 
-## Features
+## 🚀 Live Demo
 
-- **Attendee Profiles** - Psychological & professional profiles with interests, pain points, and conversation hooks
-- **Strategic Agenda** - Time-boxed agenda optimized for your meeting goal  
-- **Talking Points** - Specific phrases and tactics (not generic advice)
-- **Predicted Q&A** - The 5 hardest questions + battle-tested answers
-- **Pre-Meeting Checklist** - Prioritized actions with time estimates
-- **Readiness Score** - Calculated score (0-100) based on preparation completeness
+**[Try it now →](https://meetingmind-ai-nine.vercel.app/)**
 
-## Live Demo
+## ✨ Features
 
-**[View Live Demo](https://your-vercel-url.vercel.app)** (Update after deployment)
+- **👥 Attendee Profiles** — Psychological & professional profiles with interests, pain points, and conversation hooks
+- **📋 Strategic Agenda** — Time-boxed agenda optimized for your meeting goal  
+- **💡 Talking Points** — Specific phrases and tactics (not generic advice)
+- **❓ Predicted Q&A** — The 5 hardest questions + battle-tested answers
+- **✅ Pre-Meeting Checklist** — Prioritized actions with time estimates
+- **📊 Readiness Score** — Calculated score (0-100) based on preparation completeness
 
-## Project Structure
+## 🎬 Demo Video
+
+*(Add demo video link here)*
+
+## 📁 Project Structure
 
 ```
-Day-01-MeetingMind/
-├── agent.py                 # Main Python agent (Grok AI)
+meetingmind-ai/
 ├── api/
-│   └── briefing.py          # Vercel serverless API endpoint
+│   └── briefing.js          # Vercel serverless API endpoint (Node.js + Grok AI)
 ├── demo.html                # Interactive browser demo
-├── requirements.txt         # Python dependencies
-├── vercel.json              # Vercel deployment config
-├── .env.example             # Environment variables template
-├── .gitignore               # Git ignore rules
+├── index.html               # Entry point for Vercel
+├── package.json             # Node.js dependencies
+├── meetingmind-results.png  # Screenshot for README
 ├── startup-one-pager.md     # Business model & strategy
-└── linkedin-post.md         # Marketing content
+├── linkedin-post.md         # Marketing content
+└── AGENTS.md                # Agent documentation
 ```
 
-## Setup & Development
+## 🛠️ Tech Stack
+
+- **Backend:** Node.js + Grok AI (xAI)
+- **Frontend:** Vanilla HTML/CSS/JS
+- **Hosting:** Vercel (Serverless)
+- **AI API:** OpenAI-compatible Grok API
+
+## 🔧 Setup & Development
 
 ### 1. Clone & Install
 
 ```bash
-git clone <your-repo-url>
-cd Day-01-MeetingMind
-pip install -r requirements.txt
+git clone https://github.com/sathishlella/meetingmind-ai.git
+cd meetingmind-ai
+npm install
 ```
 
 ### 2. Configure Environment
 
-```bash
-cp .env.example .env
-# Edit .env and add your Grok API key
-```
-
-**.env file:**
+Create a `.env` file:
 ```
 XAI_API_KEY=your_grok_api_key_here
 ```
@@ -60,57 +67,45 @@ Get your free Grok API key from: https://console.x.ai
 
 ### 3. Run Locally
 
-**Python Agent:**
 ```bash
-python agent.py
+# Install Vercel CLI
+npm i -g vercel
+
+# Run dev server
+vercel dev
 ```
 
-**Web Demo:**
-```bash
-# Open directly in browser
-open demo.html  # macOS
-start demo.html # Windows
+Open http://localhost:3000
 
-# Or serve via Python
-python -m http.server 8000
-# Open http://localhost:8000/demo.html
+## ☁️ Deploy to Vercel
+
+### Quick Deploy
+
+1. **Go to** [vercel.com](https://vercel.com) → Sign in with GitHub
+2. **Click** "Add New Project"
+3. **Import** `sathishlella/meetingmind-ai`
+4. **Add Environment Variable:**
+   - Name: `XAI_API_KEY`
+   - Value: Your Grok API key
+5. **Click Deploy**
+
+### CLI Deploy
+
+```bash
+npm i -g vercel
+vercel
+# Add env var
+vercel env add XAI_API_KEY
+vercel --prod
 ```
 
-## Deploy to Vercel
-
-### 1. Push to GitHub
-
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/yourusername/meetingmind-ai.git
-git push -u origin main
-```
-
-### 2. Deploy on Vercel
-
-1. Go to [vercel.com](https://vercel.com) and sign in
-2. Click **"Add New Project"**
-3. Import your GitHub repository
-4. In project settings, add environment variable:
-   - **Name:** `XAI_API_KEY`
-   - **Value:** Your Grok API key (`gsk_...`)
-5. Click **Deploy**
-
-### 3. Update README
-
-After deployment, update the Live Demo link in this README with your actual Vercel URL.
-
-## Environment Variables
+## 📝 Environment Variables
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `XAI_API_KEY` | Yes | Your Grok (xAI) API key |
-| `SERP_API_KEY` | No | Optional, for live web research |
+| `XAI_API_KEY` | ✅ Yes | Your Grok (xAI) API key |
 
-## How It Works
+## 🎯 How It Works
 
 1. **Input:** Meeting details (title, type, goal, attendees)
 2. **AI Processing:** Grok AI analyzes and generates:
@@ -118,9 +113,9 @@ After deployment, update the Live Demo link in this README with your actual Verc
    - Strategic agenda
    - Talking points & predicted Q&A
    - Action checklist
-3. **Output:** Complete meeting briefing in Markdown/JSON
+3. **Output:** Complete meeting briefing with readiness score
 
-## Business Model
+## 💼 Business Model
 
 | Plan | Price | Features |
 |------|-------|----------|
@@ -129,33 +124,41 @@ After deployment, update the Live Demo link in this README with your actual Verc
 | Team | $199/mo | Shared playbooks |
 | Enterprise | Custom | SSO, API, dedicated CSM |
 
-## Tech Stack
-
-- **Backend:** Python + Grok AI (xAI)
-- **Frontend:** Vanilla HTML/CSS/JS
-- **Hosting:** Vercel (Serverless)
-- **API:** OpenAI-compatible Grok API
-
-## Target Market
+## 🎯 Target Market
 
 - **B2B Sales Reps** (5.7M in US)
 - **Startup Founders & CEOs** (600K in US)  
 - **VC/PE Investors** (80K in US)
 
-## Screenshots
+## 🏆 About the Challenge
 
-*(Add screenshots after deployment)*
+This project is part of **"100 Days, 100 AI Agents — Building the Future in Public"**
 
-## Contributing
+I'm building 100 AI agents in 100 days, sharing the journey openly. Each day = one AI agent startup. Follow along!
 
-This is part of the **100 Days 100 Startups** challenge. Follow the journey!
+**Day 1:** MeetingMind AI — Meeting preparation agent
 
-## License
+## 🔗 Links
 
-MIT License - feel free to use and modify.
+- 🌐 **Live Demo:** https://meetingmind-ai-nine.vercel.app/
+- 💻 **GitHub:** https://github.com/sathishlella/meetingmind-ai
+- 🐦 **Twitter/X:** *(Add your handle)*
+- 💼 **LinkedIn:** *(Add your profile)*
+
+## 🤝 Contributing
+
+This is an open journey! Feel free to:
+- ⭐ Star the repo
+- 🐛 Report issues
+- 💡 Suggest features
+- 🔀 Submit PRs
+
+## 📄 License
+
+MIT License — feel free to use and modify.
 
 ---
 
 **Built by:** Sathish Lella  
-**Challenge:** 100 Days 100 Startups  
-**Day:** 1 of 100
+**Challenge:** 100 Days, 100 AI Agents — Building the Future in Public  
+**Day:** 1 of 100 🚀

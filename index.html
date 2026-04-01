@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MeetingMind AI — Day 1 of 100</title>
+  <title>MeetingMind AI — Day 1 of 100 | 100 Days, 100 AI Agents</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -458,7 +458,7 @@
       <p>Intelligent Meeting Preparation Agent</p>
     </div>
   </div>
-  <div class="badge">🚀 Day 1 of 100</div>
+  <div class="badge">🚀 Day 1 of 100 | 100 Days, 100 AI Agents</div>
 </header>
 
 <div class="container">
@@ -508,7 +508,7 @@
 
     <!-- MEETING SCORE -->
     <div class="card result-section" id="scoreSection">
-      <h2>📊 Meeting Readiness Score</h2>
+      <h2>📊 Meeting Readiness Score <span id="modeIndicator" style="font-size:12px;margin-left:10px;font-weight:normal;"></span></h2>
       <div id="scoreContent"></div>
     </div>
 
@@ -605,7 +605,9 @@
 
     // Try API first, fallback to mock
     let data = null;
+    let apiError = null;
     try {
+      console.log('Calling API...');
       const response = await fetch('/api/briefing', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -620,16 +622,29 @@
       
       if (response.ok) {
         const result = await response.json();
-        data = transformApiResponse(result);
+        console.log('API response:', result);
+        if (result.error) {
+          apiError = result.error;
+        } else {
+          data = transformApiResponse(result);
+        }
+      } else {
+        apiError = 'API returned ' + response.status;
       }
     } catch (e) {
-      console.log('API not available, using mock data');
+      console.log('API error:', e);
+      apiError = e.message;
     }
 
     // Fallback to mock if API failed
     if (!data) {
+      console.log('Using mock data, API error:', apiError);
       await sleep(2000);
       data = buildBriefingData(title, type, goal, attendees, ctx);
+      data._mockMode = true;
+      data._apiError = apiError;
+    } else {
+      data._liveMode = true;
     }
 
     hideLoading();
@@ -825,6 +840,14 @@
   // ── RENDER ──
   function renderBriefing(data) {
     document.getElementById('emptyState').style.display = 'none';
+
+    // Show mode indicator (Live AI or Demo)
+    const modeIndicator = document.getElementById('modeIndicator');
+    if (data._liveMode) {
+      modeIndicator.innerHTML = '<span style="color:#4fd1c5;">● Live AI</span>';
+    } else {
+      modeIndicator.innerHTML = '<span style="color:#f6ad55;">● Demo Mode' + (data._apiError ? ' (API: ' + data._apiError + ')' : '') + '</span>';
+    }
 
     // Score section
     const scoreEl = document.getElementById('scoreSection');

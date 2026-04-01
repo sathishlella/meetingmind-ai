@@ -1,0 +1,50 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]: 🧠
+      - generic [ref=e5]:
+        - heading "MeetingMind AI" [level=1] [ref=e6]
+        - paragraph [ref=e7]: Intelligent Meeting Preparation Agent
+    - generic [ref=e8]: 🚀 Day 1 of 100
+  - generic [ref=e9]:
+    - generic [ref=e10]:
+      - heading "⚙️ Meeting Setup" [level=2] [ref=e11]
+      - generic [ref=e12]: Meeting Title
+      - textbox "e.g. Q2 Sales Strategy Review" [ref=e13]: Q2 Enterprise Expansion Review
+      - generic [ref=e14]: Meeting Type
+      - combobox [ref=e15] [cursor=pointer]:
+        - option "Sales / Discovery Call" [selected]
+        - option "Investor Pitch"
+        - option "Hiring Interview"
+        - option "Partnership Discussion"
+        - option "Product Review"
+        - option "Client Check-in"
+      - generic [ref=e16]: Your Goal for This Meeting
+      - textbox "e.g. Convince them to upgrade to Enterprise plan and close by end of quarter..." [ref=e17]: Close the $120K annual contract and get procurement sign-off this week
+      - generic [ref=e18]: Attendees
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - text: Sarah Chen, Stripe
+          - generic [ref=e21] [cursor=pointer]: ×
+        - generic [ref=e22]:
+          - text: Marcus Reeves, Stripe
+          - generic [ref=e23] [cursor=pointer]: ×
+      - generic [ref=e24]:
+        - textbox "Name, Company (e.g. Sarah Chen, Stripe)" [ref=e25]
+        - button "+ Add" [ref=e26] [cursor=pointer]
+      - generic [ref=e27]: Additional Context
+      - textbox "Any background info, previous interactions, known pain points..." [ref=e28]: They missed their Q1 growth targets and their CTO is pushing for automation solutions
+      - button "🧠 Generate Meeting Briefing" [disabled] [ref=e29]
+    - generic [ref=e31]:
+      - generic [ref=e32]: 🤝
+      - paragraph [ref=e33]:
+        - text: Fill in your meeting details and click
+        - strong [ref=e34]: Generate
+        - text: to get your AI-powered briefing
+  - generic [ref=e37]:
+    - generic [ref=e38]: 🔍 Researching attendees...
+    - generic [ref=e39]: 📊 Analyzing meeting context...
+    - generic [ref=e40]: 🎯 Generating agenda...
+    - generic [ref=e41]: 💡 Crafting talking points...
+    - generic [ref=e42]: ❓ Predicting questions...
+    - generic [ref=e43]: ✅ Building checklist...
